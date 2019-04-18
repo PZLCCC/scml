@@ -1,0 +1,119 @@
+{extend name="public/base" /}
+{block name="nav"}
+<h1>
+    <span class="action-span"><a href="">商品列表</a>
+    </span>
+    <span class="action-span1"><a href="">ECSHOP 管理中心</a></span>
+    <span id="search_id" class="action-span1"> - 添加新商品 </span>
+    <div style="clear:both"></div>
+</h1>
+{/block}
+{block name="body"}
+    <div class="tab-div">
+        <div id="tabbar-div">
+            <p>
+                <span class="tab-front">通用信息</span>
+                <span class="tab-front">详细描述</span>
+            </p>
+        </div>
+        <div id="tabbody-div">
+            <form enctype="multipart/form-data" action="" method="post">
+                {:token()}
+                <table width="90%" class="table" align="center">
+                    <tr>
+                        <td class="label">商品名称：</td>
+                        <td><input type="text" name="goods_name" value="{$info.goods_name}" />
+                            <span class="require-field">*</span></td>
+                    </tr>
+                    <tr>
+                        <td class="label">商品货号： </td>
+                        <td>
+                            <input type="text" name="goods_sn" value="{$info.goods_sn}" />
+                            <span id="goods_sn_notice"></span><br />
+                            <span class="notice-span" id="noticeGoodsSN">如果您不输入商品货号，系统将自动生成一个唯一的货号。</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">商品分类：</td>
+                        <td>
+                            <select name="cate_id">
+                                <option value="0">请选择...</option>
+                                {volist name="category" id="vo"}
+                                <option value="{$vo.id}" {eq name="$info.cate_id" value="$vo.id" }selected="selected" {/eq}>{$vo.lev|str_repeat='&nbsp;&nbsp;',###}{$vo.cate_name}
+                                    </option> {/volist} </select> <span class="require-field">*</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="label">本店售价：</td>
+                        <td>
+                            <input type="text" name="shop_price" value="{$info.shop_price}" />
+                            <span class="require-field">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">商品总库存：</td>
+                        <td>
+                            <input type="text" name="goods_number" value="{$info.goods_number}" />
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">加入推荐：</td>
+                        <td>
+                            <input type="checkbox" name="is_hot" value="1" {eq name="$info.is_hot" value="1" }checked="checked"
+                                {/eq} /> 热卖
+                            <input type="checkbox" name="is_new" value="1" {eq name="$info.is_new" value="1" }checked="checked"
+                                {/eq}/> 新品 <input type="checkbox" name="is_rec" value="1" {eq name="$info.is_rec" value="1"
+                                }checked="checked" {/eq}/> 推荐 </td> </tr> <tr>
+                        <td class="label">市场售价：</td>
+                        <td>
+                            <input type="text" name="market_price" value="{$info.market_price}" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="label">商品图片：</td>
+                        <td>
+                            <input type="file" name="goods_img" size="35" /><br />
+                            <img src="__RESOURCE__{$info.goods_img}" width="200">
+                        </td>
+                    </tr>
+                </table>
+                <table width="90%" class="table" align="center" style="display: none">
+                    <tr>
+                        <td>
+                            <!-- 加载编辑器的容器 -->
+                            <script id="container" name="goods_body" type="text/plain" style="min-height: 400px;">{$info.goods_body|htmlspecialchars_decode}</script>
+                            <!-- 配置文件 -->
+                            <script type="text/javascript" src="__STATIC__/ueditor/ueditor.config.js"></script>
+                            <!-- 编辑器源码文件 -->
+                            <script type="text/javascript" src="__STATIC__/ueditor/ueditor.all.js"></script>
+                            <!-- 实例化编辑器 -->
+                            <script type="text/javascript">
+                                var ue = UE.getEditor('container');
+                            </script>
+                        </td>
+                    </tr>
+                </table>
+                <div class="button-div">
+                    <input type="submit" value=" 确定 " class="button" />
+                    <input type="reset" value=" 重置 " class="button" />
+                </div>
+            </form>
+        </div>
+    </div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $('#tabbar-div p span').click(function () {
+        // 将所有的table标签全部隐藏
+        $('.table').hide();
+        // 将当前点击选项卡标签对应的table显示
+        // 获取当前点击的span标签的序号
+        var index = $(this).index();
+        // 使用序号将对应的table标签显示
+        $('.table').eq(index).show();
+    });
+</script>
+{/block}

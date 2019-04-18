@@ -1,0 +1,30 @@
+{extend name="public:base" /}
+{block name="body"}
+<form method="post" action="" name="listForm">
+    <div class="list-div" id="listDiv">
+        <table width="100%" cellspacing="1" cellpadding="2" id="list-table">
+            <tr>
+                <th>属性名称</th>
+                <th>所属类型</th>
+                <th>属性类型</th>
+                <th>属性值录入方式</th>
+                <th>默认值</th>
+                <th>操作</th>
+            </tr>
+            {volist name="data" id="vo"}
+            <tr align="center" class="0">
+                <td>{$vo.attr_name}</td>
+                <td>{$vo.type_name}</td>
+                <td>{eq name="$vo.attr_type" value="1"}唯一属性{else /}单选属性{/eq}</td>
+                <td>{eq name="$vo.attr_input_type" value="1"}手动输入{else /}列表选择{/eq}</td>
+                <td>{$vo.attr_values}</td>
+                <td width="30%" align="center">
+                    <a href="{:url('edit','id='.$vo['id'])}">编辑</a> |
+                    <a href="{:url('remove','id='.$vo['id'])}" title="移除" onclick="">移除</a>
+                </td>
+            </tr>
+            {/volist}
+        </table>
+    </div>
+</form>
+{/block}
